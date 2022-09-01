@@ -1,4 +1,4 @@
-Instant exchange API
+THORChain Exchange API
 =====================================
 
 The following methods are used to empower your service with THORChain exchange features. 
@@ -34,27 +34,25 @@ The following methods are used to empower your service with THORChain exchange f
 ### **Fixed Rate Exchange Feature**
 
 1. New way of exchanging the crypto assets;
-2. 150+ cryptos available for the fixed rate exchanges;
-3. Users get the exact amount of money as they expected;
-4. Less technical support requests on the subject of rate fluctuation and compensation.
+2. 10+ cryptos available for swaps;
+3. Users swaps are price-protected;
+4. No KYC or registration required
 
 ### **Getting started**
 
-1. Contact us at pro@changelly.com to get the API keys;
+1. Use API key "freekey" for rate-limited requests. Contact for higher rate-limits on an API key.
 2. Read the following documentation;
 3. Open an issue if you have any questions.
 
-Please note, that for currencies with multiple outputs in a transaction (BTC, LTC, etc), we do not accept more than one output per address in one transaction.
+Please note, that for currencies with multiple outputs in a transaction (BTC, LTC, etc), the protocol does not accept more than one output per address in one transaction.
 
 * * *
 
 ### **Your API extra fee**
 
-After setting up an API key you may want to set up your API extra fee.
+After setting up an API key you may want to set up your API extra fee. For example, you may choose to charge a 0.5% fee.
 
-For example, you may choose to charge a 0.5% fee on top of Changelly exchange fee.
-
-To set up an extra commission, [please email us](mailto:pro@changelly.com "pro@changelly.com") with a link to your service.
+To set up an extra commission, please email with a link to your service.
 
 Your API extra commission is included in a result of `getExchangeAmount` function call. All fees are always in output currency.
 
@@ -63,30 +61,30 @@ Usage
 
 Implementation examples on GitHub:
 
-* [Node.js](https://github.com/changelly/api-changelly "https://github.com/changelly/api-changelly")
-* [C#](https://github.com/changelly/changelly-examples/blob/master/c%23/ChangellyExample.cs "https://github.com/changelly/changelly-examples/blob/master/c%23/ChangellyExample.cs")
-* [Python](https://github.com/changelly/changelly-examples/blob/master/python/example.py "https://github.com/changelly/changelly-examples/blob/master/python/example.py")
-* [PHP](https://github.com/changelly/changelly-examples/blob/master/php/example.php "https://github.com/changelly/changelly-examples/blob/master/php/example.php")
+* [Node.js]
+* [C#]
+* [Python]
+* [PHP]
 
-Postman Collection and short description of API methods with examples: [https://api-docs.changelly.com](https://api-docs.changelly.com/ "https://api-docs.changelly.com/"). You will need to set up authentication to use Postman with our API.
+Postman Collection and short description of API methods with examples:
 
-API URL: `https://api.changelly.com`
+API URL: `https://api.thorwallet.com`
 
 ### **Use Case**
 
 Here is simple use case of our exchange API:
 
 1.  API — get available at the current moment list of currencies with `getCurrencies` or `getCurrenciesFull` method;
-2.  GUI — ask user for currency pair he wants to exchange. For example, it can be LTC (Litecoin) to ETH (Ethereum);
+2.  GUI — ask user for currency pair they want to exchange. For example, it can be LTC (Litecoin) to ETH (Ethereum);
 3.  API — get minimum exchangeable amount for selected currency pair with `getMinAmount` method;
 4.  GUI — ask user for the amount to exchange;
 5.  API — call `getExchangeAmount` method to get estimated ETH amount after exchange;
 6.  GUI — show an estimated amount to user and ask for confirmation;
-7.  GUI — ask user for his wallet address to send coins after exchange;
-8.  API — call `validateAddress` method to validate the user's wallet addres for a given currency (ETH);
-9.  API — call `createTransaction` method to get the LTC address to which user should send his funds;
+7.  GUI — ask user for their wallet address to send coins after exchange;
+8.  API — call `validateAddress` method to validate the user's wallet address for a given currency (ETH);
+9.  API — call `createTransaction` method to get the LTC address to which user should send their funds;
 10. GUI — ask user to send LTC coins to the address for exchange;
-11.  User sends LTC. We receive LTC and exchange it for ETH. We send ETH to the address that was submitted to `createTransaction` method;
+11.  User sends LTC. THORChain receives LTC and exchanges it for ETH to the address that was submitted to `createTransaction` method;
 12.  Via `getTransactions` method you can get all the transactions history.
 
 ### **Protocol**
@@ -101,8 +99,8 @@ Example request:
    "id": "test",
    "method": "getMinAmount",
    "params": {
-      "from": "ltc",
-      "to": "eth"
+      "from": "ltc.ltc",
+      "to": "eth.eth"
    }
 }
 ```
@@ -125,7 +123,7 @@ All requests must contain the following headers:
 
 | **Header** | **Description**                                                                               |
 |------------|-----------------------------------------------------------------------------------------------|
-| api-key    | your api key                                                                                  |
+| api-key    | your api key or "freekey"                                                                     |
 | sign       | the query's serialized body signed by your key's "secret" according to the HMAC-SHA512 method |
 
 
@@ -197,9 +195,9 @@ There are the commands to work with currencies:
   We can disable and enable any currency at any time and the response list will reflect the change.
 * `getCurrenciesFull` will return the list of all available currencies along with description and state.
   
-  If any of currencies is disabled by us, it will be returned in the response list with the `"enabled": false` property.
+  If any of currencies is disabled by THORChain, it will be returned in the response list with the `"enabled": false` property.
   
-Check the list of available currencies at [Supported currencies page](https://changelly.com/supported-currencies "https://changelly.com/supported-currencies") before you start. 
+Check the list of available currencies at [Supported currencies page] before you start. 
 
 #### getCurrencies
 
@@ -225,11 +223,6 @@ Example response:
       "ltc",
       "eth",
       "doge",
-      "xrp",
-      "xem",
-      "lsk",
-      "xmr",
-      "zec"
    ]
 }
 ```
@@ -277,11 +270,6 @@ Example response:
 }
 ```
 
-_Note and warning_: According to clause 2.9.2 of our [Terms of Use](https://changelly.com/terms-of-use), “No crypto assets sent to us via an unsupported and/or not recommended network (e.g. POLYGON network) can be refunded. Recommended networks will be displayed to you during the transaction process.” 
-
-That’s why we are asking you to indicate the currency network in your interface so that your users can send funds via the correct network. Please use the `blockchain` field from the `getCurrenciesFull` method for that.
-
-Besides, there is the `notifications` field in the `getCurrenciesFull` method. This value contains important warnings that could help your customers make payments properly and significantly reduce the number of support inquiries. You can implement these notifications in your interface to make the UX better.
 
 ### **Minimum Exchangeable Amount**
 
@@ -455,19 +443,15 @@ Example response fields:
 
 ### **Generating Transaction**
 
-After a successful call of `createTransaction` method, you get a unique ID to track the transaction status and a payin address for user to send money to.
-
-`createTransaction`, once get called, creates a pair of deposit and payout address. If somebody sends coins to the same address twice, without second call to `createTransaction`, the coins will be exchanged and sent to the user's payout address.
+After a successful call of `createTransaction` method, you get a unique ID to track the transaction status and a payin address for user to send money to, as well as a memo that MUST be used. If no memo, the tx will be refunded minus fees.
 
 | Property | Required or optional | Description |
 |----------|----------------------|-------------|
 | from     | required             | currency to exchange from |
 | to       | required             | currency to exchange for |
 | address  | required             | recipient address |
-| extraId  | optional             | property for addresses of currencies that use additional ID for transaction processing (XRP, XLM, EOS, IGNIS, BNB, XMR, ARDOR, DCT, XEM) |
+| memo  | required             | required to communicate with THORChain |
 | amount | required | amount of currency you are going to send |
-| refundAddress | optional | used in case of refund |
-| refundExtraId | optional | same as of `extraId` but for `refundAddress` |
 
 Example request:
 
@@ -480,7 +464,7 @@ Example request:
       "from": "btc",
       "to": "ltc",
       "address": "<<valid ltc address>>",
-      "extraId": null,
+      "minAmountTo": 0.9,
       "amount": 1
    }
 }
@@ -494,16 +478,15 @@ Example response:
    "id": "test",
    "result": {
       "id": "jev5lt0qmg26h48v",
-      "apiExtraFee": "0",
-      "changellyFee": "0.4",
-      "payinExtraId": null,
-      "payoutExtraId": null,
+      "thorwalletFee": "0.4",
+      "memo": “swap:LTC.LTC:<address>:<minAmountTo777>:tw:10”,
       "amountExpectedFrom": 1,
       "amountExpectedTo": "417.72381300",
       "status": "new",
       "currencyFrom": "btc",
       "currencyTo": "ltc",
       "amountTo": "0.00000000",
+      "minAmountTo": 0.9,
       "payinAddress": "<<btc address to send coins to>>",
       "payoutAddress": "<<valid ltc address>>",
       "createdAt": "2018-09-24T10:31:18.000Z"
@@ -517,11 +500,10 @@ Example response fields:
 |--------------------|------------------------------------------------------------------------|
 | id                 | Transaction ID. Could be used in `getStatus` method                    |
 | apiExtraFee        | Your API Extra fee in percents                                         |
-| changellyFee       | Changelly fee in percents                                              |
+| thorwalletFEe      | Changelly fee in percents                                              |
 | payinAddress       | Address for a user to send coins to                                    |
-| payinExtraId       | `ExtraId` for `payinAddress` in case it is required                    |
+| memo               | Required for THORChain                                                 |
 | payoutAddress      | Address where the exchange result will be sent to                      |
-| payoutExtraId      | `ExtraId` for `payoutAddress` in case it is required                   |
 | amountExpectedFrom | `amount` from `createTransaction`                                      |
 | amountExpectedTo   | `result` from `getExchangeAmount` at the moment of `createTransaction` |
 | status             | Transaction status                                                     |
@@ -558,11 +540,8 @@ Example 2 response:
    "result": {
       "id": "pgj49c80p572minj",
       "apiExtraFee": "0",
-      "changellyFee": "0.4",
-      "payinExtraId": null,
-      "payoutExtraId": null,
-      "refundAddress": "<<eth refund address>>",
-      "refundExtraId": null,
+      "thorwalletFee": "0.4",
+      "memo": memo,
       "amountExpectedFrom": 1,
       "amountExpectedTo": "22.28103500",
       "status": "new",
@@ -578,7 +557,6 @@ Example 2 response:
 
 _Note_: `amountTo: 0` is expected. `amountTo` will have non-zero value when transaction is in `finished` state.
 
-_Note and warning_: If the `payinExtraId` parameter in the response is not `null`, it is required for user to send the funds to the `payinAddress` specifying `extraId`. Otherwise, the transactions will not be processed and the user will need to get a refund through technical support. 
 
 ### **Identifying The Transaction**
 
@@ -635,13 +613,9 @@ Example response:
       "currencyFrom": "ltc",
       "currencyTo": "btc",
       "payinAddress": "<<payin address>>",
-      "payinExtraId": null,
-      "payinExtraIdName": null,
       "payinHash": null,
       "amountExpectedFrom": "1",
       "payoutAddress": "<<payout address>>",
-      "payoutExtraId": null,
-      "payoutExtraIdName": null,
       "payoutHash": null,
       "payoutHashLink": null,
       "refundHash": null,
@@ -650,7 +624,7 @@ Example response:
       "amountTo": "0",
       "amountExpectedTo": "0.00247406",
       "networkFee": "0",
-      "changellyFee": "0.4",
+      "thorwalletFee": "0.4",
       "apiExtraFee": "0.00",
       "totalFee": null,
       "canPush": false,
@@ -668,13 +642,9 @@ Example response:
       "currencyFrom": "ltc",
       "currencyTo": "eth",
       "payinAddress": "<<payin address>>",
-      "payinExtraId": null,
-      "payinExtraIdName": null,
       "payinHash": "txid4",
       "amountExpectedFrom": "1",
       "payoutAddress": "<<payout address>>",
-      "payoutExtraId": null,
-      "payoutExtraIdName": null,
       "payoutHash": null,
       "payoutHashLink": null,
       "refundHash": null,
@@ -683,7 +653,7 @@ Example response:
       "amountTo": "0",
       "amountExpectedTo": "0.041989",
       "networkFee": null,
-      "changellyFee": "0.5",
+      "thorwalletFee": "0.5",
       "apiExtraFee": "0.00",
       "totalFee": null,
       "canPush": false,
@@ -726,15 +696,11 @@ Example response:
             "currencyFrom": "xlm",
             "currencyTo": "eth",
             "payinAddress": "GDX6FFZUVSYTOV****************HUXXPXYOUIOY6CDQXG4NP6OEQ7",
-            "payinExtraId": "9783********7653",
-            "payinExtraIdName": "Memo.ID",
             "payinHash": null,
             "payoutHashLink": null,
             "refundHashLink": null,
             "amountExpectedFrom": "500",
             "payoutAddress": "0xCde3463364****************73d7f91136Ac34",
-            "payoutExtraId": null,
-            "payoutExtraIdName": null,
             "payoutHash": null,
             "refundHash": null,
             "amountFrom": "",
@@ -1177,37 +1143,24 @@ Example response:
 
 You can get logo of each currency with
 
-[https://web-api.changelly.com/api/coins/btc.png](https://web-api.changelly.com/api/coins/btc.png)
+https://github.com/trustwallet/assets/blob/master/blockchains/bitcoin/info/logo.png
 
 ### **KYC/AML Policy**
 
-1. Kindly note that we have AML/KYC policy;
-2. Due to this policy, users’ transactions may be held for KYC procedures;
-3. That is why, before users start an exchange via our API, please, notify them about the possibility of holding the transactions for KYC procedures;
-4. You may want to use the following text: “Exchange services provided by Changelly. By clicking “Accept”, I acknowledge and understand that my transaction may trigger AML/KYC verification according to Changelly AML/KYC”;
-5. The text may appear in a form of a pop-up window, you are welcome to check the examples of a [desktop version notification](https://i.imgur.com/v0BDpk7.jpeg) and a [mobile version notification](https://i.imgur.com/P540cbW.jpeg);
-6. If a transaction of your customer gets ‘hold’ status, please ask the customer to contact our security team at security@changelly.com in order to pass the KYC procedure.
+None required
 
 ### **Support**
 
 #### Dedicated Support Line
 
-Changelly provides two options for support. Please choose your support line and inform us at [pro@changelly.com](mailto:pro@changelly.com "pro@changelly.com"):
-
 — You just redirect users to our support line;
 
 — You provide the first line support from your side and send your tickets directly to our dedicated email address. These tickets are forwarded strictly to our second level support team. It will be assigned the highest priority. Please don't make our email public.
 
-Inform us in case the dedicated support line is needed. Feel free to request it at [pro@changelly.com](mailto:pro@changelly.com "pro@changelly.com").
-
 Also, send us a link to your service, confirm that you are ready to provide support from your side and you won’t share this email with your clients.
 
-The support line option is provided at the discretion of the Changelly's developer team.
 
 #### Online Transactions History
 
-You can check all the transactions with online stats on the [history page](https://changelly.com/history "https://changelly.com/history") in your personal account.
+You can check all the transactions with online stats on the [history page] in your personal account.
 
-
-### Error codes
-<table class="relative-table wrapped confluenceTable"><colgroup><col style="width: 5.84936%;" /><col style="width: 19.391%;" /><col style="width: 39.3429%;" /><col style="width: 35.4167%;" /></colgroup><tbody><tr><th class="confluenceTh">Code</th><th class="confluenceTh" colspan="1">Method</th><th class="confluenceTh">Message</th><th class="confluenceTh">Description</th></tr><tr><td class="confluenceTd" rowspan="3"><code>-32600</code><p><br /></p><p><br /></p></td><td class="confluenceTd" colspan="1"><p>getFixRateForAmount<span style="color: #003366;">,&nbsp;</span></p>getExchangeAmount</td><td class="confluenceTd" colspan="1"><p><code>Invalid amount: maximal amount is&nbsp;{max_amount}</code></p></td><td class="confluenceTd" colspan="1"><p>The attempt to exchange more currency than a maximal amount.</p></td></tr><tr><td class="confluenceTd" colspan="1"><p>getFixRateForAmount<span style="color: #003366;">,&nbsp;</span></p>getExchangeAmount</td><td class="confluenceTd" colspan="1"><p><code>Invalid amount: minimal amount is&nbsp;{min_amount}<br /></code></p></td><td class="confluenceTd" colspan="1"><p>The attempt to exchange less currency than a minimal amount.</p></td></tr><tr><td class="confluenceTd" colspan="1">Any method</td><td class="confluenceTd" colspan="1"><p><code>Error: You reached requests limit {limit}&nbsp;rps</code></p></td><td class="confluenceTd" colspan="1"><p>You have been sending more than 10 requests per second.</p></td></tr><tr><td class="confluenceTd" colspan="4"><br /></td></tr><tr><td class="confluenceTd"><code>-32601</code></td><td class="confluenceTd" style="text-align: left;" colspan="1">N/A</td><td class="confluenceTd" colspan="1"><p><code>Method not found</code></p></td><td class="confluenceTd" colspan="1">The method you're calling doesn't exist.</td></tr><tr><td class="confluenceTd" colspan="4"><br /></td></tr><tr><td class="confluenceTd" rowspan="10"><code>-32602</code><p><br /></p><p><br /></p><p><br /></p><p><br /></p><p><br /></p></td><td class="confluenceTd" colspan="1">Any method containing from/to parameter</td><td class="confluenceTd" colspan="1"><p><code>Invalid currency:&nbsp;{currency} temporary disabled<br /></code></p></td><td class="confluenceTd" colspan="1"><p>This currency is currently disabled.</p></td></tr><tr><td class="confluenceTd" colspan="1"><p>getFixRate,&nbsp;getFixRateForAmount, createFixTransaction</p></td><td class="confluenceTd" colspan="1"><p><code>Invalid currency:&nbsp;{currency} temporary disabled for fix rate transactions<br /></code></p></td><td class="confluenceTd" colspan="1"><p>This currency is currently disabled for fix-rate transactions.</p></td></tr><tr><td class="confluenceTd" colspan="1">Any method containing from/to parameter</td><td class="confluenceTd" colspan="1"><p><code>Invalid currency:&nbsp;{currency} is temporary disabled on API as output currency<br /></code></p></td><td class="confluenceTd" colspan="1"><p>This currency is currently disabled on API as an output currency.</p></td></tr><tr><td class="confluenceTd" colspan="1">Any method containing from/to parameter</td><td class="confluenceTd" colspan="1"><p><code>Invalid currency:&nbsp;{currency} is temporary disabled on API as input currency<br /></code></p></td><td class="confluenceTd" colspan="1"><p>This currency is currently disabled on API as an input currency.</p></td></tr><tr><td class="confluenceTd" colspan="1">Any method containing from/to parameter</td><td class="confluenceTd" colspan="1"><p><code>Invalid currency:&nbsp;{currency} not found</code></p></td><td class="confluenceTd" colspan="1"><p>This currency is not listed on Changelly.</p></td></tr><tr><td class="confluenceTd" colspan="1"><p>createTransaction,&nbsp;<br />createFixTransaction</p></td><td class="confluenceTd" colspan="1"><p><code>Error: Invalid address<br /></code></p></td><td class="confluenceTd" colspan="1"><p>You've specified an invalid payout address.</p></td></tr><tr><td class="confluenceTd" colspan="1"><p>createFixTransaction</p></td><td class="confluenceTd" colspan="1"><p><code>Error:<code class="c-mrkdwn__code c-mrkdwn__code--no_left_cap" style="text-align: left;"> Invalid refund address</code></code></p></td><td class="confluenceTd" colspan="1"><p>You've specified an invalid refund address.</p></td></tr><tr><td class="confluenceTd" colspan="1">Any method</td><td class="confluenceTd" colspan="1"><p><code><code class="c-mrkdwn__code c-mrkdwn__code--no_left_cap" style="text-align: left;">Parameter {param} is invalid</code></code></p></td><td class="confluenceTd" colspan="1"><p>You've specified an invalid parameter.&nbsp;</p></td></tr><tr><td class="confluenceTd" colspan="1"><p>createTransaction</p></td><td class="confluenceTd" colspan="1"><p><code><code class="c-mrkdwn__code c-mrkdwn__code--no_left_cap" style="text-align: left;"><span>Not enough liquidity in pair {from_currency}-&gt;{to_currency}. Max amount is {max_from} {from_currency}.</span><br /></code></code></p></td><td class="confluenceTd" colspan="1"><p><span>The amount you've specified exceeds maximal volume.</span></p></td></tr><tr><td class="confluenceTd" colspan="1">createFixTransaction</td><td class="confluenceTd" colspan="1"><code>Error: rateId was expired or already used. Use method getFixRateForAmount to generate new rateId&nbsp;</code></td><td class="confluenceTd" colspan="1">New rateId has to be generated.</td></tr><tr><td class="confluenceTd" colspan="4"><br /></td></tr><tr><td class="confluenceTd"><code>-32603</code></td><td class="confluenceTd" colspan="1">createFixTransaction</td><td class="confluenceTd" colspan="1"><p><code>Error: Creating fix transactions limit exceeds, wait 5 minute<br /></code></p></td><td class="confluenceTd" colspan="1"><p>The limit for creating fix-rate transactions was exceeded. Please wait for 5 more minutes and try again.</p></td></tr><tr><td class="confluenceTd"><br /></td><td class="confluenceTd" colspan="1">createTransaction</td><td class="confluenceTd" colspan="1"><p><code>An error encountered during address generation. Please try again later.<br /></code></p></td><td class="confluenceTd" colspan="1"><p>An error occurred during address generation.</p></td></tr><tr><td class="confluenceTd"><br /></td><td class="confluenceTd" colspan="1">Any method</td><td class="confluenceTd" colspan="1"><p><code>Internal Error OR Error</code></p></td><td class="confluenceTd" colspan="1"><p>Most likely, the problem is on our side. Further investigation is required.</p></td></tr></tbody></table>
