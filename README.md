@@ -1,7 +1,7 @@
 Instant exchange API
 =====================================
 
-The following methods are used to empower your service with Changelly exchange features. You can request more features by contacting our developers team. Changelly API is a white-label exchange solution.
+The following methods are used to empower your service with THORChain exchange features. 
 
 ### **Table of contents**:
 
@@ -91,7 +91,7 @@ Here is simple use case of our exchange API:
 
 ### **Protocol**
 
-Changelly API uses JSON-RPC 2.0 protocol.
+API uses JSON-RPC 2.0 protocol.
 
 Example request:
 
